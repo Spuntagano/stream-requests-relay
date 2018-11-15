@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var app = require('../dist/app');
+var request = require('../dist/websocket/request').request;
+var verifyClient = require('../dist/websocket/request').verifyClient;
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+var WebSocket = require('ws');
+
+var sslConfig = {
+  key: fs.readFileSync(path.resolve('cert/server.key')),
+  cert: fs.readFileSync(path.resolve('cert/server.crt'))
+};
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3001');
+var sslPort = normalizePort(process.env.SSL_PORT || '3002');
+var wsPort = normalizePort(process.env.WS_PORT || '3003');
+var wssPort = normalizePort(process.env.WSS_PORT || '3004');
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+var secureServer = https.createServer(sslConfig, app);
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port, function() {
+  console.log(`Web Server is listening`);
+});
+
+secureServer.listen(sslPort, function () {
+  console.log(`Secure web Server is listening`);
+});
+
+/**
+ * Websocket
+ */
+
+var wsServer = new http.createServer();
+var wssServer = new https.createServer(sslConfig);
+
+var ws = new WebSocket.Server({ server: wsServer, verifyClient });
+var wss = new WebSocket.Server({ server: wssServer, verifyClient });
+
+ws.on('connection', request);
+wss.on('connection', request);
+
+wsServer.listen(wsPort, function() {
+  console.log(`Websocket Server is listening`);
+});
+
+wssServer.listen(wssPort, function() {
+  console.log(`Secure websocket Server is listening`);
+});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+

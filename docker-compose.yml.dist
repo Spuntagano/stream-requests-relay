@@ -1,0 +1,19 @@
+stream-requests-relay:
+  build: .
+  ports:
+    - 80:3001
+    - 443:3002
+    - 3003:3003
+    - 3004:3004
+  environment:
+    - PORT=3001
+    - SSL_PORT=3002
+    - WS_PORT=3003
+    - WSS_PORT=3004
+    - ORIGIN=https://localhost.rig.twitch.tv:8080
+    - WS_ORIGIN=http://localhost:3004
+    - PRIVATE_KEY=
+    - SECRET_KEY=
+    - TWITCH_API_BASE_URL=https://api.twitch.tv
+    - NODE_ENV=production
+  restart: always

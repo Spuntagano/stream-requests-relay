@@ -13,8 +13,8 @@ var path = require('path');
 var WebSocket = require('ws');
 
 var sslConfig = {
-  key: fs.readFileSync(path.resolve('cert/server.key')),
-  cert: fs.readFileSync(path.resolve('cert/server.crt'))
+  key: fs.readFileSync(path.resolve('cert/privkey.pem')),
+  cert: fs.readFileSync(path.resolve('cert/fullchain.pem'))
 };
 
 /**

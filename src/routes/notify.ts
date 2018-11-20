@@ -1,7 +1,7 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var nodeFetch = require('node-fetch');
-var connections = require('../websocket/request').connections;
+var connections = require('../websocket/connection').connections;
 var log = require('../utils/logger');
 
 var router = express.Router();

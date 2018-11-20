@@ -1,12 +1,12 @@
 var connections: any = {};
 
-function request(ws) {
+var connection = function(ws) {
     if (!connections[ws.protocol]) connections[ws.protocol] = [];
     connections[ws.protocol].push(ws);
-}
+};
 
-function verifyClient(info, next) {
+var verifyClient = function(info, next) {
     next(info.origin === process.env.WS_ORIGIN || info.origin === process.env.WSS_ORIGIN);
 };
 
-module.exports = {request: request, connections: connections, verifyClient: verifyClient};
+module.exports = {request: connection, connections: connections, verifyClient: verifyClient};

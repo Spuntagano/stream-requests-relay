@@ -3,10 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 
-var allowCorsRouter = require('./routes/allow-cors');
+var allowCors = require('./middlewares/allow-cors');
 var indexRouter = require('./routes/index');
 var notifyRouter = require('./routes/notify');
 var signRouter = require('./routes/sign');
+var requestRouter = require('./routes/request');
 
 var app = express();
 
@@ -14,11 +15,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(allowCorsRouter);
+app.use(allowCors);
 
 app.use('/', indexRouter);
 app.use('/notify', notifyRouter);
 app.use('/sign', signRouter);
+app.use('/request', requestRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

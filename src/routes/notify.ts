@@ -26,10 +26,8 @@ router.post('/', function (req, res) {
                 }
 
                 if (connections[data.user_id]) {
-                    connections[data.user_id].forEach((ws, index) => {
-                        if (ws.readyState === 3) {
-                            connections[data.user_id].splice(index, 1);
-                        } else {
+                    connections[data.user_id].forEach((ws) => {
+                        if (ws.readyState !== 3) {
                             ws.send(JSON.stringify(req.body));
                         }
                     });

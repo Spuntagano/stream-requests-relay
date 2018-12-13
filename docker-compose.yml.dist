@@ -7,6 +7,8 @@ services:
       - 3002:3002
       - 3003:3003
       - 3004:3004
+    volumes:
+      - ./cert:/www/stream-requests-relay/cert
     environment:
       PORT: 3001
       SSL_PORT: 3002

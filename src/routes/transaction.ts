@@ -1,5 +1,3 @@
-import {settings} from 'cluster';
-
 var express = require('express');
 var auth = require('../lib/auth');
 var notify = require('../lib/notify');

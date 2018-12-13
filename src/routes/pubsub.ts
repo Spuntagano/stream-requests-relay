@@ -31,7 +31,8 @@ router.post('/', async (req, res, next) => {
                 targets: ['broadcast'],
                 message: JSON.stringify({
                     transactionId: req.body.transactionId,
-                    message: req.body.message
+                    message: req.body.message,
+                    userId: token.user_id
                 })
             })
         }).then((response, err) => {

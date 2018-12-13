@@ -6,8 +6,8 @@ if (!process.env.NODE_ENV) {
 var basePath = (process.env.NODE_ENV === 'development' ? '../src' : '../dist');
 
 var app = require(`${basePath}/app`);
-var request = require(`${basePath}/websocket/connection`).request;
-var verifyClient = require(`${basePath}/websocket/connection`).verifyClient;
+var connectionHandler = require(`${basePath}/websocket/connection-handler`);
+var verifyClient = require(`${basePath}/websocket/verify-client`);
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
@@ -33,22 +33,22 @@ var wssServer = new https.createServer(sslConfig);
 var ws = new WebSocket.Server({ server: wsServer, verifyClient });
 var wss = new WebSocket.Server({ server: wssServer, verifyClient });
 
-ws.on('connection', request);
-wss.on('connection', request);
+ws.on('connection', connectionHandler);
+wss.on('connection', connectionHandler);
 
-server.listen(port, function() {
+server.listen(port, () => {
   console.log(`Web Server is listening`);
 });
 
-secureServer.listen(sslPort, function () {
+secureServer.listen(sslPort, () => {
   console.log(`Secure web Server is listening`);
 });
 
-wsServer.listen(wsPort, function() {
+wsServer.listen(wsPort, () => {
   console.log(`Websocket Server is listening`);
 });
 
-wssServer.listen(wssPort, function() {
+wssServer.listen(wssPort, () => {
   console.log(`Secure websocket Server is listening`);
 });
 

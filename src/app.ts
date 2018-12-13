@@ -1,13 +1,16 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 
 var allowCors = require('./middlewares/allow-cors');
+var errorHandler = require('./middlewares/error-handler');
 var indexRouter = require('./routes/index');
-var notifyRouter = require('./routes/notify');
-var signRouter = require('./routes/sign');
+var transactionRouter = require('./routes/transaction');
+var pubsubRouter = require('./routes/pubsub');
 var requestRouter = require('./routes/request');
+var configRouter = require('./routes/setting');
+var productRouter = require('./routes/product');
+require('./models/relationships');
 
 var app = express();
 
@@ -18,24 +21,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCors);
 
 app.use('/', indexRouter);
-app.use('/notify', notifyRouter);
-app.use('/sign', signRouter);
+app.use('/pubsub', pubsubRouter);
+app.use('/transaction', transactionRouter);
 app.use('/request', requestRouter);
+app.use('/setting', configRouter);
+app.use('/product', productRouter);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.send('error');
-});
+app.use(errorHandler);
 
 module.exports = app;

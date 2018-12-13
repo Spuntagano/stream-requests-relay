@@ -13,23 +13,4 @@ var sequelize = new Sequelize(process.env.MYSQL_DATABASE_NAME, process.env.MYSQL
     },
 });
 
-// user.create({
-//     twitchUsername: 'bob'
-// });
-//
-// config.create({
-//     showImage: true,
-//     playSound: true,
-//     sendChat: true,
-//     userId: 1
-// });
-//
-// request.create({
-//     name: 'name',
-//     description: 'desc',
-//     price: 100,
-//     active: true,
-//     userId: 1
-// });
-
 module.exports = sequelize;

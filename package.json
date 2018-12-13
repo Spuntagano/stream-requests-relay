@@ -3,12 +3,11 @@
   "version": "0.0.1",
   "main": "./bin/www",
   "scripts": {
-    "start": "ts-node ./bin/www",
-    "build": "tsc",
-    "dev": "nodemon"
+    "start": "nodemon",
+    "host": "ts-node ./bin/www",
+    "build": "tsc"
   },
   "dependencies": {
-    "@types/sequelize": "^4.27.30",
     "cookie-parser": "~1.4.3",
     "express": "~4.16.0",
     "jsonwebtoken": "^8.3.0",
@@ -18,7 +17,8 @@
     "ws": "^6.1.0"
   },
   "devDependencies": {
-    "@types/node": "^10.12.2",
+    "@types/node": "^10.12.12",
+    "@types/sequelize": "^4.27.32",
     "dotenv": "^6.1.0",
     "nodemon": "^1.18.6",
     "ts-node": "^7.0.1",

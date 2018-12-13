@@ -1,0 +1,52 @@
+if (!process.env.NODE_ENV) {
+  require('dotenv').config();
+}
+
+var Product = require('../dist/models/Product');
+
+let products = {
+  "1": [
+    {
+      "sku":"test1-1",
+    },
+    {
+      "sku":"test1-2",
+    },
+    {
+      "sku":"test1-3",
+    }
+  ],
+  "10": [
+    {
+      "sku":"test10-1",
+    },
+    {
+      "sku":"test10-2",
+    },
+    {
+      "sku":"test10-3",
+    }
+  ],
+  "50": [
+    {
+      "sku":"test50-1",
+    },
+    {
+      "sku":"test50-2",
+    },
+    {
+      "sku":"test50-3",
+    }
+  ]
+};
+
+Object.keys(products).forEach((price) => {
+  products[price].forEach((product, index) => {
+    Product.create({
+      sku: product.sku,
+      price,
+      test: product.test,
+      index
+    });
+  });
+});

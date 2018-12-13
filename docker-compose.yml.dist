@@ -1,19 +1,39 @@
-stream-requests-relay:
-  build: .
-  ports:
-    - 80:3001
-    - 443:3002
-    - 3003:3003
-    - 3004:3004
-  environment:
-    - PORT=3001
-    - SSL_PORT=3002
-    - WS_PORT=3003
-    - WSS_PORT=3004
-    - ORIGIN=https://localhost.rig.twitch.tv:8080
-    - WS_ORIGIN=http://localhost:3004
-    - SECRET_KEY=
-    - TWITCH_API_BASE_URL=https://api.twitch.tv
-    - NODE_ENV=production
-    - VERSION=0.0.3
-  restart: always
+version: '3.1'
+services:
+  stream-requests-relay:
+    build: .
+    ports:
+      - 3001:3001
+      - 3002:3002
+      - 3003:3003
+      - 3004:3004
+    environment:
+      PORT: 3001
+      SSL_PORT: 3002
+      WS_PORT: 3003
+      WSS_PORT: 3004
+      ORIGIN: https://localhost.rig.twitch.tv:8080
+      WS_ORIGIN: http://localhost:3005
+      SECRET_KEY:
+      TWITCH_API_BASE_URL: https://api.twitch.tv
+      NODE_ENV: production
+      VERSION: 0.0.3
+      MYSQL_HOST: mysql
+      MYSQL_USER: StreamRequests
+      MYSQL_PASSWORD:
+      MYSQL_DATABASE_NAME: StreamRequestsStaging
+    restart: always
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: StreamRequestsStaging
+      MYSQL_USER: StreamRequests
+      MYSQL_PASSWORD:
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10

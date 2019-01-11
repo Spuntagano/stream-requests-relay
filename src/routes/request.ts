@@ -44,7 +44,9 @@ router.post('/', async (req, res, next) => {
     }
 
     try {
-        await User.findOrCreate({ where: { userId: token.user_id }});
+        await User.findOrCreate({ where: { userId: token.user_id }, defaults: {
+            userId: token.user_id
+        }});
 
         Object.keys(requests).forEach((price) => {
             requests[price].forEach(async (r, index) => {
@@ -70,10 +72,15 @@ router.post('/', async (req, res, next) => {
                         title: r.title,
                         description: r.description,
                         active: r.active,
-                    })
+                    });
+                }
+
+                if (!r.title.length && !r.description.length) {
+                    request[0].destroy();
                 }
             });
         });
+
     } catch(e) {
         return next(new DatabaseError(e));
     }

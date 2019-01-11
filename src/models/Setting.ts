@@ -11,6 +11,9 @@ module.exports = sequelize.define('setting', {
     sendChat: {
         type: Sequelize.BOOLEAN,
     },
+    profanityFilter: {
+        type: Sequelize.BOOLEAN,
+    },
     userId: {
         type: Sequelize.STRING,
         references: {

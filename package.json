@@ -8,6 +8,7 @@
     "build": "tsc"
   },
   "dependencies": {
+    "censor-sensor": "^1.0.4",
     "cookie-parser": "~1.4.3",
     "express": "~4.16.0",
     "jsonwebtoken": "^8.3.0",

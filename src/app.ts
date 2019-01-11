@@ -10,6 +10,7 @@ var pubsubRouter = require('./routes/pubsub');
 var requestRouter = require('./routes/request');
 var configRouter = require('./routes/setting');
 var productRouter = require('./routes/product');
+var notifyRouter = require('./routes/notify');
 require('./models/relationships');
 
 var app = express();
@@ -26,6 +27,7 @@ app.use('/transaction', transactionRouter);
 app.use('/request', requestRouter);
 app.use('/setting', configRouter);
 app.use('/product', productRouter);
+app.use('/notify', notifyRouter);
 
 app.use(errorHandler);
 

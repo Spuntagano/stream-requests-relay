@@ -1,10 +1,12 @@
 var express = require('express');
+var nodeFetch = require('node-fetch');
 var sequelize = require('../lib/sequelize');
 var Setting = require('../models/Setting');
 var User = require('../models/User');
 var auth = require('../lib/auth');
 var DatabaseError = require('../errors/DatabaseError');
 var AuthorizationError = require('../errors/AuthorizationError');
+var ApiError = require('../errors/ApiError');
 
 var router = express.Router();
 
@@ -25,7 +27,8 @@ module.exports = router.get('/', async (req, res, next) => {
         settings = await Setting.findOrCreate({ where: { userId: token.channel_id }, defaults: {
             showImage: true,
             playSound: true,
-            sendChat: true
+            sendChat: true,
+            profanityFilter: true
         }});
     } catch (e) {
         return next(new DatabaseError(e));
@@ -64,6 +67,31 @@ router.post('/', async (req, res, next) => {
         }
     } catch(e) {
         return next(new DatabaseError(e));
+    }
+
+    if (req.body.settings.flushConfigs) {
+        try {
+            await nodeFetch(`${process.env.TWITCH_API_BASE_URL}/extensions/${req.headers.clientid}/configurations`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': req.headers.authorization,
+                    'Client-ID': req.headers.clientid,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    segment: 'broadcaster',
+                    channel_id: token.user_id,
+                    version: process.env.VERSION,
+                    content: ''
+                })
+            }).then((response, err) => {
+                if (!response.ok || err) {
+                    throw err || response;
+                }
+            });
+        } catch (e) {
+            return next(new ApiError(e));
+        }
     }
 
     res.status(204).send();

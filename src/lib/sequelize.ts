@@ -4,6 +4,7 @@ var sequelize = new Sequelize(process.env.MYSQL_DATABASE_NAME, process.env.MYSQL
     host: process.env.MYSQL_HOST,
     dialect: 'mysql',
     operatorsAliases: false,
+    logging: false,
 
     pool: {
         max: 5,

@@ -17,11 +17,9 @@ class Connections {
             return;
         }
 
-        conns[userId].forEach((ws, index) =>{
-            if (ws.readyState === CLOSED_STATE || ws.readyState === CLOSING_STATE) {
-                conns[userId].splice(index, 1);
-            }
-        })
+        conns[userId] = conns[userId].filter((ws) =>{
+            return !(ws.readyState === CLOSED_STATE || ws.readyState === CLOSING_STATE);
+        });
     }
 
     getActiveByChannel(channelId) {

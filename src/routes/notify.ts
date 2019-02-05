@@ -7,7 +7,7 @@ var ApiError = require('../errors/ApiError');
 var router = express.Router();
 
 router.post('/', async (req, res, next) => {
-    let token = req.body.requests;
+    let token;
 
     try {
         token = await auth(req.headers.authorization);

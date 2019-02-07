@@ -21,7 +21,7 @@ router.get('/', async (req, res, next) => {
 
     try {
         transactions = await Transaction.findAll({
-            where: {userId: token.user_id}, limit: 20, order: [['createdAt', 'DESC']]
+            where: {userId: token.user_id}, limit: parseInt(req.query.limit, 10), order: [['createdAt', 'DESC']]
         });
     } catch (e) {
         return next(new DatabaseError(e));
@@ -37,6 +37,7 @@ router.post('/', async (req, res, next) => {
 
     try {
         token = await auth(req.headers.authorization);
+        await auth(req.body.requestReceived.transaction.transactionReceipt);
     } catch(e) {
         return next(new AuthorizationError(e));
     }
